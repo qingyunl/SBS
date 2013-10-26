@@ -11,5 +11,4 @@ public class DecryptException extends Exception {
 	public String getMessage() {
 		return super.getMessage();
 	}
-
 }

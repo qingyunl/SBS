@@ -11,5 +11,4 @@ public class EncryptException extends Exception {
 	public String getMessage() {
 		return super.getMessage();
 	}
-
 }
