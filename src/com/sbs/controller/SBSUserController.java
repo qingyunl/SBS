@@ -64,7 +64,7 @@ public class SBSUserController {
 		}
 		//System.out.println(userID);
 		else{
-		return "loginPage";
+		return "loginPage"; 
 		}
 	}
 	@RequestMapping(value="/loginFunction", method = RequestMethod.POST)
