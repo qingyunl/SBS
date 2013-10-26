@@ -32,7 +32,11 @@
          <div class="span4">
              <ul class="nav nav-list">
              	<li class="nav-header">Other Links</li>
-             	<li>Add Links Here</li>
+             	<!-- <li>Add Links Here</li> -->
+				<li><a href="External_TXN.html">External TXN</a></li>
+				<li><a href="Internal_TXN.html">Internal TXN</a></li>
+				<li><a href="System_Log.html">System Log</a></li>
+				<li><a href="notifications.html">Notifications</a></li>
              </ul>
          </div>
          <div class="span8">
