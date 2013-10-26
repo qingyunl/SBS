@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 
 
+
 import org.hibernate.Query;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.sbs.model.combined.UserandOTP;
+import com.sbs.model.notification.Notification;
+import com.sbs.model.notification.NotificationList;
+import com.sbs.model.notification.NotificationManager;
 import com.sbs.model.otp.OneTimePasswd;
+import com.sbs.model.transaction.Transaction;
+import com.sbs.model.transaction.TransactionManager;
 import com.sbs.model.user.User;
 import com.sbs.model.user.UserManager;
 
@@ -224,6 +233,70 @@ public class SBSUserController {
         return "redirect:"+referer;
     }
 	
-
+	@RequestMapping("/External_TXN")
+    public ModelAndView extTxn() {
+		//List<Transaction> tList = TransactionManager.getAllTransactions();
+		List<Transaction> tList = TransactionManager.getExtTransactions();
+		ModelAndView mv = new ModelAndView("/External_TXN");
+		mv.addObject("extTxnList", tList);
+        return mv;
+    }
+	
+	@RequestMapping("/Internal_TXN")
+    public ModelAndView intTxn() {
+		List<Transaction> tList = TransactionManager.getIntTransactions();
+		ModelAndView mv = new ModelAndView("/Internal_TXN");
+		mv.addObject("intTxnList", tList);
+        return mv;
+    }
+	
+	@RequestMapping("/System_Log")
+    public ModelAndView sysLog() {	
+		List<Transaction> tList = TransactionManager.getSystemLog();
+		ModelAndView mv = new ModelAndView("/System_Log");
+		mv.addObject("sysLogList", tList);
+        return mv;
+    }
+	
+	@RequestMapping("/notifications")
+    public ModelAndView notifications() {	
+		List<Notification> notList = NotificationManager.getNotifications("kdvyas");
+		ModelAndView mv = new ModelAndView("/notifications");
+		NotificationList nList = new NotificationList();
+		nList.setNotifications(notList);
+		mv.addObject("notificationList", nList);
+        return mv;
+    }
+	
+	@RequestMapping(value = "/notificationRequest", method = RequestMethod.POST)
+    public String notificationRequest(@ModelAttribute("notificationList") NotificationList nList, HttpServletRequest request) {	
+		//List<Notification> nList = NotificationManager.getNotifications("kdvyas");
+		//ModelAndView mv = new ModelAndView("/notifications");
+		//mv.addObject("notificationList", nList);
+		for (Notification n : nList.getNotifications()) {
+			if ("A".equals(n.getStatus()) || "D".equals(n.getStatus()))
+			NotificationManager.updateNotification(n);
+		}
+		String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
+    }
+	
+	@RequestMapping(value = "/intTxnRequest", method = RequestMethod.POST)
+    public String intTxnRequest(@RequestParam(value = "selectedId", required=true) int[] txnIds, HttpServletRequest request) {
+        for (int txnId : txnIds) {
+        	// get transaction for both the parties
+        	Transaction t = TransactionManager.getTransaction(txnId);
+        	if (t.getFromUserId() != null || !t.getFromUserId().equals("")) {
+				Notification n = new Notification(t.getFromUserId(), "requester", "N", txnId);
+				NotificationManager.createNotification(n);
+        	}
+        	if (t.getToUserId() != null || !t.getToUserId().equals("")) {
+				Notification n = new Notification(t.getToUserId(), "requester", "N", txnId);
+				NotificationManager.createNotification(n);
+        	}
+        }
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
+    }
 
 }
