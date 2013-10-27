@@ -12,8 +12,7 @@ public class ConnectLDAPServer {
 	{
 		try{
 		
-			LDAPConnection connection = new LDAPConnection("localhost", 389,
-		     "cn=admin,dc=example,dc=com", "Admin");
+			LDAPConnection connection = new LDAPConnection("localhost", 389);
 			return connection;
 	
 		}

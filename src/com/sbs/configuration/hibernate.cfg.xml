@@ -33,6 +33,13 @@
 		<mapping resource="com/sbs/model/transaction/Transaction.hbm.xml" />
 		<mapping resource="com/sbs/model/notification/Notification.hbm.xml" />
         <mapping class = "com.sbs.model.otp.OneTimePasswordEntity"/>
+        <mapping class="com.asu.ss.secure_banking_system.model.AccountEntity"/>
+        <mapping class="com.asu.ss.secure_banking_system.model.TransactionEntity"/>
+		<mapping class="com.asu.ss.secure_banking_system.model.RoleEntity"/>
+		<mapping class="com.asu.ss.secure_banking_system.model.UserEntity"/>
+		<mapping class="com.asu.ss.secure_banking_system.model.RequestEntity"/>
+		<mapping class="com.asu.ss.secure_banking_system.model.RoleRequestEntity"/>
+		<mapping class="com.asu.ss.secure_banking_system.model.TAARequestEntity"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -9,9 +9,9 @@ import com.unboundid.ldap.sdk.SimpleBindRequest;
 
 public class LDAPUtil {
 
-	public static void main(String[]password)
+	public static void main(String[] password)
 	{
-		LDAPUtil.checkPassword("Apps");
+		//LDAPUtil.checkPassword("Apps");
 		LDAPUtil.createUserEntry("myusername1", "myuserpassword1", "HappyTT", 1, "My User");
 	}
 	
@@ -42,14 +42,14 @@ public class LDAPUtil {
 	
 	/**
 	 * creates and user entry
-	 * @param userName
+	 * @param userID
 	 * @param password
 	 * @param ogranization
 	 * @param departmentNumber
 	 * @param cnName
 	 * @return boolean
 	 */
-	public static boolean createUserEntry(String userName, 
+	public static boolean createUserEntry(String userID, 
 			String password, 
 			String ogranization, 
 			int departmentNumber,
@@ -58,11 +58,11 @@ public class LDAPUtil {
 		
 		String[] ldifLines =
             {
-                    "dn: uid="+userName+",ou="+ogranization+", dc=example,dc=com",
+                    "dn: dc=my-domain,dc=com",
                     "cn: "+cnName,
                     "departmentNumber: "+departmentNumber,
                     "sn: "+cnName,
-                    "uid: "+userName,
+                    "uid: "+userID,
                     "userPassword: "+password,
                     "objectClass: inetOrgPerson"
                     

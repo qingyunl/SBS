@@ -45,7 +45,23 @@ import com.sbs.model.user.UserManager;
 
 @Controller("SBSUserController")
 public class SBSUserController {
-
+	
+	//testing purpose
+	@RequestMapping("/requestrole")
+    public String requestrPage(Model model) {	
+		User user = new User();
+        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "request_role";
+    }
+	@RequestMapping("/admin_notif")
+    public String adminnot(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "admin_notification";
+    }
+	
 	@RequestMapping("/CheckID")
     public String IDcheck(Model model) {	
 		User user = new User();
