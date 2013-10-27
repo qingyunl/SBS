@@ -1,6 +1,5 @@
 package com.asu.ss.secure_banking_system.servlet;
 
-
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -11,20 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.asu.ss.secure_banking_system.model.RoleRequestEntity;
-import com.asu.ss.secure_banking_system.service.RoleAssignmentService;
+import com.asu.ss.secure_banking_system.model.TAARequestEntity;
+import com.sbs.model.user.User;
 
 /**
- * Servlet implementation class RoleRequestValidation
+ * Servlet implementation class ProcessTAARequest
  */
-@WebServlet("/RoleRequestValidation")
-public class RoleRequestValidation extends HttpServlet {
+@WebServlet("/ProcessTAARequest")
+public class ProcessTAARequest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RoleRequestValidation() {
+    public ProcessTAARequest() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,24 +32,21 @@ public class RoleRequestValidation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		
+		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		try{
 		HttpSession session = request.getSession();
-		RoleRequestEntity re = (RoleRequestEntity)session.getAttribute("RoleRequestToValidate");
-		RoleAssignmentService resvc = new RoleAssignmentService();
-		if(resvc.isValidRequest(re))
-			session.setAttribute("isValidRequest", true);
-		else
-			session.setAttribute("isValidRequest", false);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/assign_role.html");
+		TAARequestEntity taa = (TAARequestEntity)session.getAttribute("requestToProcess");
+		User requestedUser = new User();
+		requestedUser.setUserID(taa.getRequestedBy().getUserID());
+		session.setAttribute("userToProcess", requestedUser);
+		RequestDispatcher rd  = getServletContext().getRequestDispatcher("/process_taa.html");
 		rd.forward(request, response);
 		}
 		catch(Exception exception)

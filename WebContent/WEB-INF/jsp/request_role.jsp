@@ -52,15 +52,15 @@
 			<td><select style="width: 234px;" name="roleSelect" id = "roleSelect">
 			<option>Please select one...</option>
 			<%
-				
 				RoleType[] roles = rrsvc.getAllRoles();
 				for(int i=0;i<roles.length; i++)
 				{
 			%>  			
-				<option value= <%= roles[i]%>><%= roles[i]%></option></select>
+				<option value= <%= roles[i]%>><%= roles[i]%></option>
 			<%
 				}
-			%>		
+			%>
+			</select>		
 			</td>
 			<td></td>
 		</tr>

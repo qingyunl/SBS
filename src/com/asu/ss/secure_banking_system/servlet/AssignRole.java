@@ -49,12 +49,12 @@ public class AssignRole extends HttpServlet {
 			RoleAssignmentService rasvc = new RoleAssignmentService();
 			rasvc.assignRoleToUser((RoleRequestEntity)session.getAttribute("RoleRequestToValidate"));
 		}
-		rd = getServletContext().getRequestDispatcher("/webpages/admin_notification.jsp");
+		rd = getServletContext().getRequestDispatcher("/admin_notif.html");
 		rd.forward(request, response);
 		}
 		catch(Exception exception)
 		{
-			rd = getServletContext().getRequestDispatcher("/webpages/admin_notification.jsp");
+			rd = getServletContext().getRequestDispatcher("/admin_notif.html");
 			rd.forward(request, response);
 			exception.printStackTrace();
 		}

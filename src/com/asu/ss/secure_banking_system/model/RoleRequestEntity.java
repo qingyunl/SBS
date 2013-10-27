@@ -1,5 +1,6 @@
 package com.asu.ss.secure_banking_system.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -7,30 +8,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.sbs.model.user.User;
+
 @Entity
 @DiscriminatorValue("RRE")
 public class RoleRequestEntity extends RequestEntity{	
 	
-	@ManyToOne
-	@JoinColumn(name="role_id")
-	private RoleEntity role;
+	@Column(name="role_id")
+	private int roleID;
 	
-	public RoleEntity getRole() {
-		return role;
+	public int getRole() {
+		return roleID;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
+	public void setRole(int roleID) {
+		this.roleID = roleID;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="request_for_user")
-	private UserEntity requestForUser;
-	public UserEntity getRequestForUser() {
+	@ManyToOne(cascade = {CascadeType.PERSIST})
+	@JoinColumn(name="request_for_user", updatable = true, insertable =false)
+	private User requestForUser;
+	public User getRequestForUser() {
 		return requestForUser;
 	}
 
-	public void setUser(UserEntity requestForUser) {
+	public void setUser(User requestForUser) {
 		this.requestForUser = requestForUser;
 	}
 

@@ -20,7 +20,7 @@
 <div class="container">
 <div class="hero-unit">
   		<div class="container">
-    		<h1>Admin Notifications</h1>
+    		<h1>System administrator notification page</h1>
     		<p>Notification page for system administrator</p>
     		<p><a class="btn btn-primary btn-lg">Learn more</a></p>
   		</div>
@@ -57,7 +57,7 @@
 				<td style="padding-left: 20px; padding-right: 20px"><%= re.getRequestedBy().getUserID()%></td>
 				<td style="padding-left: 20px; padding-right: 20px">Role assignment</td>
 				<td style="padding-left: 20px; padding-right: 20px">
-				<%= ((RoleRequestEntity)re).getRole().getRoleName()%>,<%= ((RoleRequestEntity)re).getRequestForUser().getUserID()%>
+				<%= ((RoleRequestEntity)re).getRole()%> to be assigned to <%= ((RoleRequestEntity)re).getRequestForUser().getUserID()%>
 				</td>
 				<td style="padding-left: 20px; padding-right: 20px"><button class="btn btn-primary" 
 				onclick="<% session.setAttribute("RoleRequestToValidate", re);%>>" type="submit">Validate</button></td>

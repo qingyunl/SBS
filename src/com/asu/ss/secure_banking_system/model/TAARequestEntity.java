@@ -1,10 +1,13 @@
 package com.asu.ss.secure_banking_system.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.sbs.model.user.User;
 
 
 	@Entity
@@ -24,15 +27,15 @@ import javax.persistence.ManyToOne;
 		}
 
 
-		@ManyToOne
+		@ManyToOne(cascade = {CascadeType.PERSIST})
 		@JoinColumn(name="assigned_to")
-		private UserEntity user;
-		public UserEntity getUser() {
-			return user;
+		private User assignedTo;
+		public User getAssignedTo() {
+			return assignedTo;
 		}
 
-		public void setUser(UserEntity user) {
-			this.user = user;
+		public void setAssignedTo(User assignedTo) {
+			this.assignedTo = assignedTo;
 		}
 
 

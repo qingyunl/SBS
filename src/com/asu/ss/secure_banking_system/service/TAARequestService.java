@@ -8,19 +8,19 @@ import org.hibernate.SessionFactory;
 import com.asu.ss.secure_banking_system.model.SessionFactoryUtil;
 import com.asu.ss.secure_banking_system.model.TAARequestEntity;
 import com.asu.ss.secure_banking_system.model.UserEntity;
+import com.sbs.model.user.User;
 
 public class TAARequestService {
 
-	public UserEntity getUserVerfied(String username, String dob, String emailID)
+	public User getUserVerfied(String username, String dob, String emailID)
 	{
 		//yet to be implemented
 		
-		UserEntity ue = new UserEntity();
-		ue.setUserID("abcdeew");
+		User ue = new User();
 		return ue;
 	}
 	
-	public void createTAARequest(UserEntity user, String description)
+	public void createTAARequest(User user, String description)
 	{
 		try{
 		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
@@ -30,23 +30,23 @@ public class TAARequestService {
 		TAARequestEntity taa = new TAARequestEntity();
 		taa.setAssigned(false);
 		taa.setDescription(description);
-		UserEntity ue = new UserEntity();
-		ue.setUserID("abcdeew");
-		taa.setRequestedBy(ue);
+		taa.setRequestedBy(user);
 		taa.setValidated(false);
-		taa.setRequestID(999);
 		taa.setRequestTime(new Date());
-		
-		
 		session.save(taa);
 		session.getTransaction().commit();
 		session.close();
 		}
 		catch(Exception exception)
 		{
-			
+			exception.printStackTrace();
 		}
 
+	}
+	
+	public boolean checkIfValidTAARequest(TAARequestEntity taa)
+	{
+		return true;
 	}
 	
 }

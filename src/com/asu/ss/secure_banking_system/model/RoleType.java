@@ -14,5 +14,10 @@ public enum RoleType {
     private RoleType(int s) {
     	value = s;
     }
+    
+    public int getValue()
+    {
+    	return value;
+    }
 
 }

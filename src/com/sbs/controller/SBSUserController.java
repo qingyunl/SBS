@@ -54,6 +54,29 @@ public class SBSUserController {
 		//need LDAP server to check UserID
         return "request_role";
     }
+
+	@RequestMapping("/process_taa")
+    public String processtaa(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "process_taa";
+    }
+	
+	@RequestMapping("/taa_notification")
+    public String taanotification(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "taa_notification";
+    }	
+	@RequestMapping("/assign_taa")
+    public String assigntaa(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "assign_taa";
+    }	
 	@RequestMapping("/admin_notif")
     public String adminnot(Model model) {	
 //		User user = new User();
@@ -61,7 +84,20 @@ public class SBSUserController {
 		//need LDAP server to check UserID
         return "admin_notification";
     }
-	
+	@RequestMapping("/request_taa")
+    public String requesttaa(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "request_taa";
+    }
+	@RequestMapping("/assign_role")
+    public String assignrole(Model model) {	
+//		User user = new User();
+//        model.addAttribute("user", user);
+		//need LDAP server to check UserID
+        return "assign_role";
+    }
 	@RequestMapping("/CheckID")
     public String IDcheck(Model model) {	
 		User user = new User();

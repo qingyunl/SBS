@@ -10,38 +10,38 @@ import com.asu.ss.secure_banking_system.model.RequestEntity;
 import com.asu.ss.secure_banking_system.model.RoleRequestEntity;
 import com.asu.ss.secure_banking_system.model.RoleType;
 import com.asu.ss.secure_banking_system.model.SessionFactoryUtil;
-import com.asu.ss.secure_banking_system.model.UserEntity;
+import com.sbs.model.user.User;
 
 public class RoleAssignmentService {
 
 	
-	public boolean checkUserHierarchy(UserEntity assigned, UserEntity assignee)
+	public boolean checkUserHierarchy(User assigned, User assignee)
 	{
-		if(assigned.getRole().getRoleName().equals(RoleType.CORPORATE_LEVEL_OFFICER))
+		if(assigned.getRoleID() == RoleType.CORPORATE_LEVEL_OFFICER.getValue())
 		{
 			return false;
 		}
-		else if(assignee.getRole().getRoleName().equals(RoleType.CORPORATE_LEVEL_OFFICER)
-				&& (   assignee.getRole().getRoleName().equals(RoleType.SYSTEM_ADMIN)
-					|| assignee.getRole().getRoleName().equals(RoleType.REGULAR_EMPLOYEE)
-					|| assignee.getRole().getRoleName().equals(RoleType.MANAGER)
-					|| assignee.getRole().getRoleName().equals(RoleType.EXTERNAL_MERCHANT_USER)
-					|| assignee.getRole().getRoleName().equals(RoleType.EXTERNAL_REGULAR_USER))
-					)
+		else if(assignee.getRoleID() == RoleType.CORPORATE_LEVEL_OFFICER.getValue()
+				&& ( assignee.getRoleID() == RoleType.SYSTEM_ADMIN.getValue()
+					|| assignee.getRoleID() == RoleType.REGULAR_EMPLOYEE.getValue()
+					|| assignee.getRoleID() == RoleType.MANAGER.getValue()
+					|| assignee.getRoleID() == RoleType.EXTERNAL_MERCHANT_USER.getValue()
+					|| assignee.getRoleID() == RoleType.EXTERNAL_REGULAR_USER.getValue()
+					))
 		{
 			return true;
 		}
-		else if(assignee.getRole().getRoleName().equals(RoleType.MANAGER)
-				&& (   assigned.getRole().getRoleName().equals(RoleType.SYSTEM_ADMIN)
-					|| assigned.getRole().getRoleName().equals(RoleType.REGULAR_EMPLOYEE)
-					|| assigned.getRole().getRoleName().equals(RoleType.EXTERNAL_MERCHANT_USER)
-					|| assigned.getRole().getRoleName().equals(RoleType.EXTERNAL_REGULAR_USER)))
+		else if(assignee.getRoleID()==RoleType.MANAGER.getValue()
+				&& (   assigned.getRoleID() == RoleType.SYSTEM_ADMIN.getValue()
+					|| assigned.getRoleID() == RoleType.REGULAR_EMPLOYEE.getValue()
+					|| assigned.getRoleID() == RoleType.EXTERNAL_MERCHANT_USER.getValue()
+					|| assigned.getRoleID() == RoleType.EXTERNAL_REGULAR_USER.getValue()))
 		{
 			return true;
 		}
-		else if(assignee.getRole().getRoleName().equals(RoleType.REGULAR_EMPLOYEE)
-				&& (  assigned.getRole().getRoleName().equals(RoleType.EXTERNAL_MERCHANT_USER)
-					|| assigned.getRole().getRoleName().equals(RoleType.EXTERNAL_REGULAR_USER)))
+		else if(assignee.getRoleID() == RoleType.REGULAR_EMPLOYEE.getValue()
+				&& (  assigned.getRoleID() == RoleType.EXTERNAL_MERCHANT_USER.getValue()
+					|| assigned.getRoleID() == RoleType.EXTERNAL_REGULAR_USER.getValue()))
 		{
 			return true;
 		}
@@ -52,13 +52,13 @@ public class RoleAssignmentService {
 	}
 	
 	
-	public boolean checkIfMultipleAuthorizationSatisfied(UserEntity assignee, List<RequestEntity> coAssignee)
+	public boolean checkIfMultipleAuthorizationSatisfied(User assignee, List<RequestEntity> coAssignee)
 	{
 		int similarLevelCoAssignee = 0;
 		
 		for(int i=0; i<coAssignee.size();i++)
 		{
-			if(assignee.getRole().getRoleID()==coAssignee.get(i).getRequestedBy().getRole().getRoleID())
+			if(assignee.getRoleID()==coAssignee.get(i).getRequestedBy().getRoleID())
 			{
 				similarLevelCoAssignee++;
 			}
@@ -95,8 +95,7 @@ public class RoleAssignmentService {
 				SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
 				Session session = sessionFactory.openSession();
 				session.beginTransaction();
-				//
-				re.getRequestForUser().setRole(re.getRole());
+				re.getRequestForUser().setRoleID(re.getRole());
 				session.save(re.getRequestForUser());
 				session.getTransaction().commit();
 				session.close();
@@ -116,7 +115,7 @@ public class RoleAssignmentService {
 		session.beginTransaction();
 		
 		String hql = "FROM RoleRequestEntity RE WHERE RE.isValidated = false AND RE.requestForUser = '"
-				+re.getRequestForUser().getUserID()+"' AND RE.role = "+re.getRole().getRoleID();
+				+re.getRequestForUser().getUserID()+"' AND RE.roleID = "+re.getRole();
 		Query query = session.createQuery(hql);
 		List<RequestEntity> requestList = query.list();
 		

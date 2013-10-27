@@ -1,35 +1,48 @@
 package com.asu.ss.secure_banking_system.service;
 
-import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.asu.ss.secure_banking_system.model.RequestEntity;
-import com.asu.ss.secure_banking_system.model.RoleEntity;
-import com.asu.ss.secure_banking_system.model.RoleRequestEntity;
-import com.asu.ss.secure_banking_system.model.RoleType;
 import com.asu.ss.secure_banking_system.model.SessionFactoryUtil;
-import com.asu.ss.secure_banking_system.model.UserEntity;
+import com.asu.ss.secure_banking_system.model.TAARequestEntity;
+import com.asu.ss.secure_banking_system.model.TransactionEntity;
 import com.sbs.model.user.User;
 
+public class ProcessTAAService {
 
-public class RequestRoleService {
-
-	public List<User> getAllInternalUsers()
+	public User getUserDetails(User user)
 	{
 		try{
 		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		
-		String hql = "FROM User";
+		String hql = "FROM User WHERE userID = '"+user.getUserID()+"'";
 		Query query = session.createQuery(hql);
 		List<User> requestList = query.list();
+		session.getTransaction().commit();
+		session.close();
+		return requestList.get(0);
+		}
+		catch(Exception exception)
+		{
+			exception.printStackTrace();
+		}
+		return null;
+	}		
+	
+	
+	public List<TransactionEntity> getTransactionDetails(User user)
+	{
+		try{
+		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		String hql = "FROM TransactionEntity TE WHERE TE.userID = '"+user.getUserID()+"'";
+		Query query = session.createQuery(hql);
+		List<TransactionEntity> requestList = query.list();
 		session.getTransaction().commit();
 		session.close();
 		return requestList;
@@ -39,42 +52,6 @@ public class RequestRoleService {
 			exception.printStackTrace();
 		}
 		return null;
-		
-	}
-	
-	public void createRoleRequest(User requestingUser, User user, RoleType role)
-	{
-		try{
-		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		RoleRequestEntity re = new RoleRequestEntity();
-		re.setRequestedBy(requestingUser);
-		re.setRequestTime(new Date());
-		re.setRole(role.getValue());
-		re.setUser(user);
-		session.save(re);
-		session.getTransaction().commit();
-		session.close();
-		}
-		catch(Exception exception)
-		{
-			exception.printStackTrace();
-		}	
-	}
-	
-	public RoleType[] getAllRoles()
-	{
-		try{
-		
-		return RoleType.values();
-		}
-		catch(Exception exception)
-		{
-			exception.printStackTrace();
-		}
-		return null;
-		
-	}	
+	}		
 }
+

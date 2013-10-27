@@ -34,7 +34,7 @@
 				<tr>
 					<td></td>
 					<td><button class="btn btn-success" type="submit"  name="Accept request" disabled= 
-					<%=(Boolean)session.getAttribute("isValidRequest")==true?"disabled":"enabled"%>>Accept request</button>
+					<%=(Boolean)session.getAttribute("isValidRequest")==false?"disabled":"enabled"%>>Accept request</button>
 					<button class="btn btn-danger" type="submit"  name="Reject request">Reject request</button>
 					</td>
 					<td>

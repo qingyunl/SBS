@@ -8,12 +8,16 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.sbs.model.user.User;
 
 @Entity
 @Table(name="REQUEST")
@@ -26,21 +30,22 @@ discriminatorType = DiscriminatorType.STRING
 public class RequestEntity {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "request_id")
 	private int requestID;
 	
-	
-	
-	@Column(name = "request_time")
-	private Date requestTime;
-
 	public int getRequestID() {
 		return requestID;
 	}
 
 	public void setRequestID(int requestID) {
 		this.requestID = requestID;
-	}
+	}	
+	
+	@Column(name = "request_time")
+	private Date requestTime;
+
+
 
 	public Date getRequestTime() {
 		return requestTime;
@@ -50,16 +55,16 @@ public class RequestEntity {
 		this.requestTime = requestTime;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="requested_by")
-	private UserEntity requestedBy;
+	@ManyToOne(cascade = {CascadeType.PERSIST})
+	@JoinColumn(name="requested_by", updatable= false, insertable = false)
+	private User requestedBy;
 	
 
-	public UserEntity getRequestedBy() {
+	public User getRequestedBy() {
 		return requestedBy;
 	}
 
-	public void setRequestedBy(UserEntity requestedBy) {
+	public void setRequestedBy(User requestedBy) {
 		this.requestedBy = requestedBy;
 	}
 }

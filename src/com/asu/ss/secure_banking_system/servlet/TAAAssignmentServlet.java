@@ -1,6 +1,5 @@
 package com.asu.ss.secure_banking_system.servlet;
 
-
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -9,22 +8,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.asu.ss.secure_banking_system.model.RoleRequestEntity;
-import com.asu.ss.secure_banking_system.service.RoleAssignmentService;
+import com.asu.ss.secure_banking_system.model.TAARequestEntity;
+import com.asu.ss.secure_banking_system.service.TAAAssignmentService;
+import com.sbs.model.user.User;
 
 /**
- * Servlet implementation class RoleRequestValidation
+ * Servlet implementation class TAAAssignmentServlet
  */
-@WebServlet("/RoleRequestValidation")
-public class RoleRequestValidation extends HttpServlet {
+@WebServlet("/TAAAssignmentServlet")
+public class TAAAssignmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RoleRequestValidation() {
+    public TAAAssignmentServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,8 +32,7 @@ public class RoleRequestValidation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -42,21 +40,19 @@ public class RoleRequestValidation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-		HttpSession session = request.getSession();
-		RoleRequestEntity re = (RoleRequestEntity)session.getAttribute("RoleRequestToValidate");
-		RoleAssignmentService resvc = new RoleAssignmentService();
-		if(resvc.isValidRequest(re))
-			session.setAttribute("isValidRequest", true);
-		else
-			session.setAttribute("isValidRequest", false);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/assign_role.html");
-		rd.forward(request, response);
-		}
-		catch(Exception exception)
+		boolean isValidRequest= (Boolean)request.getSession().getAttribute("isValidTAARequest");
+		
+		if(isValidRequest==true)
 		{
-			exception.printStackTrace();
+			TAARequestEntity taa = (TAARequestEntity)request.getSession().getAttribute("TAARequestToValidate");
+			User user = new User();
+			user.setUserID(request.getParameter("assignedUser"));
+			TAAAssignmentService svc = new TAAAssignmentService();
+			svc.assignTAAtoUser(taa, user);
 		}
+		
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/taa_notification.html");
+		rd.forward(request, response);
 	}
 
 }

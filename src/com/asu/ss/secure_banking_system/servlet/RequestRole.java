@@ -8,10 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.asu.ss.secure_banking_system.model.RoleEntity;
+import com.asu.ss.secure_banking_system.model.RoleType;
 import com.asu.ss.secure_banking_system.model.UserEntity;
 import com.asu.ss.secure_banking_system.service.RequestRoleService;
+import com.sbs.model.user.User;
 
 /**
  * Servlet implementation class RequestRole
@@ -40,14 +43,17 @@ public class RequestRole extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		/*UserEntity selectedUser = new UserEntity();
+		User selectedUser = new User();
 		selectedUser.setUserID(request.getParameter("userSelect"));
-		RoleEntity selectedRole = new RoleEntity();
-		selectedRole.setRoleID(Integer.parseInt(request.getParameter("roleSelect")));
+		RoleType selectedRole = RoleType.valueOf(request.getParameter("roleSelect"));
 		RequestRoleService rrsvc= new RequestRoleService();
-		rrsvc.createRoleRequest(selectedRole, selectedUser);
-		*/
-		RequestDispatcher rd  = getServletContext().getRequestDispatcher("/CheckID.html");
+		User requestingUser = new User();
+		HttpSession session = request.getSession();
+		requestingUser.setUserID((String)session.getAttribute("UserID"));
+		rrsvc.createRoleRequest(requestingUser, selectedUser, selectedRole);
+		
+		//RequestDispatcher rd  = getServletContext().getRequestDispatcher("/CheckID.html");
+		RequestDispatcher rd  = getServletContext().getRequestDispatcher("/jsp/admin_notification.jsp");
 		rd.forward(request, response);
 	}
 
