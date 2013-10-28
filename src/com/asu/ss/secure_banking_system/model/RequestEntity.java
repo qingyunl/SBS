@@ -56,7 +56,7 @@ public class RequestEntity {
 	}
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST})
-	@JoinColumn(name="requested_by", updatable= false, insertable = false)
+	@JoinColumn(name="requested_by")
 	private User requestedBy;
 	
 

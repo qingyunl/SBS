@@ -89,7 +89,7 @@ public class UserManager {
 		Object ob = session.get(User.class, userID);
 		//System.out.println(ob);
 		if(ob ==null)
-			return "not exist" ;
+			return null;
 		else
 			return userID;
 	}

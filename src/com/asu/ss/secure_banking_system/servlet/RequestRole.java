@@ -53,7 +53,7 @@ public class RequestRole extends HttpServlet {
 		rrsvc.createRoleRequest(requestingUser, selectedUser, selectedRole);
 		
 		//RequestDispatcher rd  = getServletContext().getRequestDispatcher("/CheckID.html");
-		RequestDispatcher rd  = getServletContext().getRequestDispatcher("/jsp/admin_notification.jsp");
+		RequestDispatcher rd  = getServletContext().getRequestDispatcher("/admin_notif.html");
 		rd.forward(request, response);
 	}
 

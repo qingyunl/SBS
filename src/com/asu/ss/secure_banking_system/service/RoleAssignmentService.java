@@ -15,9 +15,10 @@ import com.sbs.model.user.User;
 public class RoleAssignmentService {
 
 	
-	public boolean checkUserHierarchy(User assigned, User assignee)
+	public boolean checkUserHierarchy(User assigned, User assignee, int roleID)
 	{
-		if(assigned.getRoleID() == RoleType.CORPORATE_LEVEL_OFFICER.getValue())
+		
+		if(roleID == RoleType.CORPORATE_LEVEL_OFFICER.getValue())
 		{
 			return false;
 		}
@@ -119,8 +120,16 @@ public class RoleAssignmentService {
 		Query query = session.createQuery(hql);
 		List<RequestEntity> requestList = query.list();
 		
+		hql = "FROM User U WHERE U.userID = '"+re.getRequestedBy().getUserID()+"'";
+		
+		User requestingUser = (User)(session.createQuery(hql).list()).get(0);
+				
+		hql = "FROM User U WHERE U.userID = '"+re.getRequestForUser().getUserID()+"'";
+		
+		User requestforUser = (User)(session.createQuery(hql).list()).get(0);
+		
 		//check if the request came from higher level user than the user to be assigned
-		if(checkUserHierarchy(re.getRequestForUser(), re.getRequestedBy()))
+		if(checkUserHierarchy(requestforUser, requestingUser, re.getRole()))
 		{
 			re.setValidated(true);
 			updateRoleRequestEntity(re);

@@ -25,8 +25,8 @@ public class RoleRequestEntity extends RequestEntity{
 		this.roleID = roleID;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST})
-	@JoinColumn(name="request_for_user", updatable = true, insertable =false)
+	@ManyToOne(cascade = {CascadeType.MERGE})
+	@JoinColumn(name="request_for_user")
 	private User requestForUser;
 	public User getRequestForUser() {
 		return requestForUser;
@@ -57,5 +57,4 @@ public class RoleRequestEntity extends RequestEntity{
 		this.isAssigned = isAssigned;
 	}	
 
-	
 }
