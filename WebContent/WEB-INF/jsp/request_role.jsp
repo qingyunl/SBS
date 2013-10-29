@@ -14,6 +14,7 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	
 <div class="container">
 	<h1><a href="#">Request role page</a></h1>
 	<div class="row">
@@ -69,7 +70,9 @@
 			<td></td>
 			<td><button class="btn btn-primary" type="submit" style="width: 118px; "name="Request role">Request role</button>
 			</td>
-			<td></td>
+			<td>
+			<h4 style="color: RED"><%= session.getAttribute("errorDuplicateRequest")==null?"": session.getAttribute("errorDuplicateRequest").toString()%></h4>
+			</td>
 		</tr>
 	</table>
 	</form>

@@ -64,6 +64,23 @@ public class RequestRoleService {
 		}	
 	}
 	
+	public boolean checkIfRequestAlreadyExists(User requestingUser, User user, RoleType role)
+	{
+		try{
+			SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			String hql = "FROM RoleRequestEntity REE WHERE REE.roleID = :roleID AND REE.";
+			session.getTransaction().commit();
+			session.close();
+			}
+			catch(Exception exception)
+			{
+				exception.printStackTrace();
+			}
+		return false;
+	}
+	
 	public RoleType[] getAllRoles()
 	{
 		try{

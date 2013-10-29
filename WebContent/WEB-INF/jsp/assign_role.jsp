@@ -33,13 +33,21 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td><button class="btn btn-success" type="submit"  name="Accept request" disabled= 
-					<%=(Boolean)session.getAttribute("isValidRequest")==true?"disabled":"enabled"%>>Accept request</button>
-					<button class="btn btn-danger" type="reset"  name="Reject request">Reject request</button>
+					<td><%
+					if((Boolean)session.getAttribute("isValidRequest")==false)
+					{
+					%><button class="btn btn-success" type="submit"  name="Accept request" disabled="disabled">Accept request</button>
+					<% 
+					}
+					else
+					{
+					%>
+					<button class="btn btn-success" type="submit" name="Accept request">Accept request</button>
+					<% } %>
+					<button class="btn btn-danger" type="submit"  name="Reject request">Reject request</button>
 					</td>
 					<td>
 					</td>
-					
 				</tr>
 			</table>
 

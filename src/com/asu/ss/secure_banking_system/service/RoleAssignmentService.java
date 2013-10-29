@@ -52,7 +52,24 @@ public class RoleAssignmentService {
 		}
 	}
 	
-	
+	public RoleRequestEntity getRoleRequestFromID(String id)
+	{
+		try
+		{
+		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		RoleRequestEntity re = (RoleRequestEntity)session.get(RoleRequestEntity.class, (int)(Integer.parseInt(id)));
+		session.getTransaction().commit();
+		session.close();
+		return re;
+		}
+		catch(Exception exception)
+		{
+			exception.printStackTrace();
+		}		
+		return null;
+	}
 	public boolean checkIfMultipleAuthorizationSatisfied(User assignee, List<RequestEntity> coAssignee)
 	{
 		int similarLevelCoAssignee = 0;
@@ -64,7 +81,7 @@ public class RoleAssignmentService {
 				similarLevelCoAssignee++;
 			}
 		}
-		if(similarLevelCoAssignee>=3)
+		if(similarLevelCoAssignee>=2)
 			return true;
 		else
 			return false;
@@ -97,7 +114,7 @@ public class RoleAssignmentService {
 				Session session = sessionFactory.openSession();
 				session.beginTransaction();
 				re.getRequestForUser().setRoleID(re.getRole());
-				session.save(re.getRequestForUser());
+				session.saveOrUpdate(re.getRequestForUser());
 				session.getTransaction().commit();
 				session.close();
 			}
@@ -107,6 +124,31 @@ public class RoleAssignmentService {
 			exception.printStackTrace();
 		}
 	}
+
+	public boolean isDuplicateRequest(String requestedBy, String requestFor,  int role)
+	{
+		try{
+		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		String hql = "FROM RoleRequestEntity RE WHERE RE.isValidated = false AND RE.requestForUser = '"
+				+requestFor+"' AND RE.roleID = "+role
+				+" AND RE.requestedBy = '"+requestedBy+"'";
+		Query query = session.createQuery(hql);
+		List<RequestEntity> requestList = query.list();		
+		
+		if(requestList.size()>=1)
+			return true;
+		session.getTransaction().commit();
+		session.close();
+		
+		}
+		catch(Exception exception)
+		{
+			exception.printStackTrace();
+		}
+		return false;		
+	}
 	
 	public boolean isValidRequest(RoleRequestEntity re)
 	{
@@ -114,30 +156,21 @@ public class RoleAssignmentService {
 		SessionFactory sessionFactory = SessionFactoryUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		
 		String hql = "FROM RoleRequestEntity RE WHERE RE.isValidated = false AND RE.requestForUser = '"
-				+re.getRequestForUser().getUserID()+"' AND RE.roleID = "+re.getRole();
+				+re.getRequestForUser().getUserID()+"' AND RE.roleID = "+re.getRole()
+				+" AND RE.requestedBy != '"+re.getRequestedBy().getUserID()+"'";
 		Query query = session.createQuery(hql);
-		List<RequestEntity> requestList = query.list();
-		
-		hql = "FROM User U WHERE U.userID = '"+re.getRequestedBy().getUserID()+"'";
-		
-		User requestingUser = (User)(session.createQuery(hql).list()).get(0);
-				
-		hql = "FROM User U WHERE U.userID = '"+re.getRequestForUser().getUserID()+"'";
-		
-		User requestforUser = (User)(session.createQuery(hql).list()).get(0);
-		
+		List<RequestEntity> requestList = query.list();		
+		User requestingUser = (User)(session.get(User.class, re.getRequestedBy().getUserID()));
+		User requestforUser = (User)(session.get(User.class, re.getRequestForUser().getUserID()));
 		//check if the request came from higher level user than the user to be assigned
 		if(checkUserHierarchy(requestforUser, requestingUser, re.getRole()))
 		{
 			re.setValidated(true);
 			updateRoleRequestEntity(re);
-			
 		}
 		else
 		{
-			
 			if(checkIfMultipleAuthorizationSatisfied(re.getRequestedBy(), requestList)==true)
 			{
 				re.setValidated(true);
@@ -150,8 +183,6 @@ public class RoleAssignmentService {
 				return true;
 			}
 		}
-		//check if atleast two other similar request came from same level user
-		
 		session.getTransaction().commit();
 		session.close();
 		

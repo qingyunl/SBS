@@ -14,6 +14,7 @@ import com.asu.ss.secure_banking_system.model.RoleEntity;
 import com.asu.ss.secure_banking_system.model.RoleType;
 import com.asu.ss.secure_banking_system.model.UserEntity;
 import com.asu.ss.secure_banking_system.service.RequestRoleService;
+import com.asu.ss.secure_banking_system.service.RoleAssignmentService;
 import com.sbs.model.user.User;
 
 /**
@@ -44,12 +45,23 @@ public class RequestRole extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		User selectedUser = new User();
+		
 		selectedUser.setUserID(request.getParameter("userSelect"));
 		RoleType selectedRole = RoleType.valueOf(request.getParameter("roleSelect"));
 		RequestRoleService rrsvc= new RequestRoleService();
 		User requestingUser = new User();
 		HttpSession session = request.getSession();
+		session.removeAttribute("errorDuplicateRequest");
 		requestingUser.setUserID((String)session.getAttribute("UserID"));
+		RoleAssignmentService resvc = new RoleAssignmentService();
+		if(resvc.isDuplicateRequest(requestingUser.getUserID(),selectedUser.getUserID(), selectedRole.getValue()))
+		{
+			session.setAttribute("errorDuplicateRequest", "duplicate request");
+			RequestDispatcher  rd = request.getRequestDispatcher("/requestrole.html");
+			rd.forward(request, response);
+			return;
+		}
+		else
 		rrsvc.createRoleRequest(requestingUser, selectedUser, selectedRole);
 		
 		//RequestDispatcher rd  = getServletContext().getRequestDispatcher("/CheckID.html");

@@ -42,15 +42,19 @@ public class RoleRequestValidation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = null;
 		try{
-		HttpSession session = request.getSession();
-		RoleRequestEntity re = (RoleRequestEntity)session.getAttribute("RoleRequestToValidate");
+			
 		RoleAssignmentService resvc = new RoleAssignmentService();
+		HttpSession session = request.getSession();
+		RoleRequestEntity re = resvc.getRoleRequestFromID(request.getParameter("RoleRequestToValidate"));
+		
+
 		if(resvc.isValidRequest(re))
 			session.setAttribute("isValidRequest", true);
 		else
 			session.setAttribute("isValidRequest", false);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/assign_role.html");
+		rd = getServletContext().getRequestDispatcher("/assign_role.html");
 		rd.forward(request, response);
 		}
 		catch(Exception exception)

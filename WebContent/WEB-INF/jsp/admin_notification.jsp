@@ -35,6 +35,7 @@
 	</div>
 	<div class="span9">
 	<div class="container">
+
 		<table>
 
 			<tr >
@@ -59,7 +60,9 @@
 				<td style="padding-left: 20px; padding-right: 20px">
 				<%= ((RoleRequestEntity)re).getRole()%> to be assigned to <%= ((RoleRequestEntity)re).getRequestForUser().getUserID()%>
 				</td>
-				<td style="padding-left: 20px; padding-right: 20px"><button class="btn btn-primary" 
+				<td style="padding-left: 20px; padding-right: 20px">
+				<button class="btn btn-primary" id = "RoleRequestToValidate", name = "RoleRequestToValidate",
+				value= <%=re.getRequestID()%>
 				onclick="<% session.setAttribute("RoleRequestToValidate", re);%>>" type="submit">Validate</button></td>
 			</tr>
 			</form>
@@ -74,6 +77,7 @@
 				<td style="padding-left: 20px; padding-right: 20px">Technical account access</td>
 				<td style="padding-left: 20px; padding-right: 20px"><%= ((TAARequestEntity)re).getDescription()%></td>
 				<td style="padding-left: 20px; padding-right: 20px"><button class="btn btn-primary" type="submit"
+				name="TAARequestToValidate", id = "TAARequestToValidate", value =<%=re.getRequestID()%>
 				onclick="<% session.setAttribute("TAARequestToValidate", re);%>">Validate</button></td>
 			</tr>
 			</form>
