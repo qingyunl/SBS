@@ -1,5 +1,6 @@
 package com.sbs.model.LDAP;
 
+import com.sbs.model.user.User;
 import com.unboundid.ldap.sdk.AddRequest;
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -21,6 +22,12 @@ public class LDAPUtil {
 	 * @param password
 	 * @return boolean
 	 */
+	
+	public static User loadPageAuthorizationParams(User user)
+	{
+		return user;
+		
+	}
 	public static boolean checkPassword(String password)
 	{
 		try{

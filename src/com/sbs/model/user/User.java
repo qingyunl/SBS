@@ -1,5 +1,9 @@
 package com.sbs.model.user;
 
+import java.util.ArrayList;
+
+import com.asu.ss.secure_banking_system.model.PageAuthorization;
+
 public class User {
 	private String firstname;
 	private String lastname;
@@ -18,6 +22,15 @@ public class User {
 	private String secureA3;
 	private int roleID;//for distinguish internal or external user
 	private int deptID;//for distinguaish the department (only needed for internal user)
+	private PageAuthorization pageAuthorizations;
+	
+	public PageAuthorization getPageAuthorizations() {
+		return pageAuthorizations;
+	}
+	public void setPageAuthorizations(
+			PageAuthorization pageAuthorizations) {
+		this.pageAuthorizations = pageAuthorizations;
+	}
 	public String getFirstname() {
 		return firstname;
 	}

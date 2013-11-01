@@ -48,37 +48,36 @@
 			<%
 				AdminNotificationService ansvc = new AdminNotificationService();
 			    ArrayList<RequestEntity> requestList = ansvc.getAllRequestes();
-			    for(RequestEntity re: requestList)
+			    for(int i=0; i< requestList.size();i++)
 			    {
-			    	if(re.getClass()==RoleRequestEntity.class){
+			    	if(requestList.get(i).getClass()==RoleRequestEntity.class){
 			 %>
 		<form action="RoleRequestValidation" method="POST"> 
 			<tr style="padding-left: 20px; padding-right: 20px">
 			
-				<td style="padding-left: 20px; padding-right: 20px"><%= re.getRequestedBy().getUserID()%></td>
+				<td style="padding-left: 20px; padding-right: 20px"><%= requestList.get(i).getRequestedBy().getUserID()%></td>
 				<td style="padding-left: 20px; padding-right: 20px">Role assignment</td>
 				<td style="padding-left: 20px; padding-right: 20px">
-				<%= ((RoleRequestEntity)re).getRole()%> to be assigned to <%= ((RoleRequestEntity)re).getRequestForUser().getUserID()%>
+				<%= ((RoleRequestEntity)requestList.get(i)).getRole()%> to be assigned to <%= ((RoleRequestEntity)requestList.get(i)).getRequestForUser().getUserID()%>
 				</td>
 				<td style="padding-left: 20px; padding-right: 20px">
 				<button class="btn btn-primary" id = "RoleRequestToValidate", name = "RoleRequestToValidate",
-				value= <%=re.getRequestID()%>
-				onclick="<% session.setAttribute("RoleRequestToValidate", re);%>>" type="submit">Validate</button></td>
+				value= <%=i%>
+				onclick=">" type="submit">Validate</button></td>
 			</tr>
 			</form>
 			<%    	
 			    }
-			    	else if(re.getClass()==TAARequestEntity.class)
+			    	else if(requestList.get(i).getClass()==TAARequestEntity.class)
 			    	{
 			%>
 			<form action="TAARequestValidation" method="POST"> 
 			   <tr style="padding-left: 20px; padding-right: 20px">
-				<td style="padding-left: 20px; padding-right: 20px"><%= re.getRequestedBy().getUserID()%></td>
+				<td style="padding-left: 20px; padding-right: 20px"><%= requestList.get(i).getRequestedBy().getUserID()%></td>
 				<td style="padding-left: 20px; padding-right: 20px">Technical account access</td>
-				<td style="padding-left: 20px; padding-right: 20px"><%= ((TAARequestEntity)re).getDescription()%></td>
+				<td style="padding-left: 20px; padding-right: 20px"><%= ((TAARequestEntity)requestList.get(i)).getDescription()%></td>
 				<td style="padding-left: 20px; padding-right: 20px"><button class="btn btn-primary" type="submit"
-				name="TAARequestToValidate", id = "TAARequestToValidate", value =<%=re.getRequestID()%>
-				onclick="<% session.setAttribute("TAARequestToValidate", re);%>">Validate</button></td>
+				name="TAARequestToValidate", id = "TAARequestToValidate", value =<%=i%>">Validate</button></td>
 			</tr>
 			</form>
 			<%     	}

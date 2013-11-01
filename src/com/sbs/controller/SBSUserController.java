@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 
 
+
 import org.hibernate.Query;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.asu.ss.secure_banking_system.util.Util;
 import com.sbs.model.combined.UserandOTP;
 import com.sbs.model.notification.Notification;
 import com.sbs.model.notification.NotificationList;
@@ -48,13 +50,19 @@ public class SBSUserController {
 	
 	//testing purpose
 	@RequestMapping("/requestrole")
-    public String requestrPage(Model model) {	
-		User user = new User();
-        model.addAttribute("user", user);
-		//need LDAP server to check UserID
-        return "request_role";
+    public String requestrPage(Model model, HttpSession session) {	
+		User user = Util.getUser(session.getAttribute("UserID").toString());
+		if(user.getPageAuthorizations().isRequestRoleAccessible()==true)			
+			return "request_role";
+		else
+			return "not_authorized";
     }
 
+	@RequestMapping("/not_authorized")
+    public String notAuthorized(Model model) {	
+        return "not_authorized";
+    }
+	
 	@RequestMapping("/process_taa")
     public String processtaa(Model model) {	
 //		User user = new User();

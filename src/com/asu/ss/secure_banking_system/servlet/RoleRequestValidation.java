@@ -2,6 +2,7 @@ package com.asu.ss.secure_banking_system.servlet;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.asu.ss.secure_banking_system.model.RequestEntity;
 import com.asu.ss.secure_banking_system.model.RoleRequestEntity;
+import com.asu.ss.secure_banking_system.service.AdminNotificationService;
 import com.asu.ss.secure_banking_system.service.RoleAssignmentService;
 
 /**
@@ -47,9 +50,10 @@ public class RoleRequestValidation extends HttpServlet {
 			
 		RoleAssignmentService resvc = new RoleAssignmentService();
 		HttpSession session = request.getSession();
-		RoleRequestEntity re = resvc.getRoleRequestFromID(request.getParameter("RoleRequestToValidate"));
-		
-
+		int index = Integer.parseInt(request.getParameter("RoleRequestToValidate"));
+		AdminNotificationService ansvc = new AdminNotificationService();
+	    ArrayList<RequestEntity> requestList = ansvc.getAllRequestes();
+		RoleRequestEntity re = (RoleRequestEntity) requestList.get(index);
 		if(resvc.isValidRequest(re))
 			session.setAttribute("isValidRequest", true);
 		else
